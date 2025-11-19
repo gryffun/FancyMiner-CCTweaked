@@ -709,7 +709,7 @@ function up(n)
   local x,a,b,t
   for x=1, n do
     refuel()
-    
+
     if turtle.detectUp() then
       -- If there's a block above, we need to dig it
       while not turtle.up() do
@@ -731,7 +731,7 @@ function up(n)
         return false
       end
     end
-    
+
     update("up")
   end
   return true
@@ -744,7 +744,7 @@ function down(n)
   local x,a,b,t
   for x=1, n do
     refuel()
-    
+
     if turtle.detectDown() then
       -- If there's a block below, we need to dig it
       while not turtle.down() do
@@ -766,7 +766,7 @@ function down(n)
         return false
       end
     end
-    
+
     update("down")
   end
   return true
@@ -779,7 +779,7 @@ function fwd(n)
   local x,a,b,t
   for x=1, n do
     refuel()
-    
+
     if turtle.detect() then
       -- If there's a block in front, we need to dig it
       while not turtle.forward() do
@@ -801,7 +801,7 @@ function fwd(n)
         return false
       end
     end
-    
+
     update("fwd")
   end
   return true
@@ -840,7 +840,7 @@ end --function
 function dig(x)
   local success = false
   x = x or "fwd"
-  
+
   if x == "fwd" then
     if turtle.detect() then
       while turtle.dig() do
@@ -866,7 +866,7 @@ function dig(x)
       end
     end
   end
-  
+
   return success
 end
 
@@ -1035,12 +1035,12 @@ function gotoy(y)
     error("Number expected, got nil", 2)
     return
   end
-  
+
   -- Add skip depth validation
   if type(skip) == "number" and y > -skip then
     y = -skip -- Don't go above skip depth
   end
-  
+
   while ydist < y do
     if not up() then return false end
   end
@@ -1372,13 +1372,18 @@ function dropNotFuel()
   -- Check there's inventory to place loot
   a = true
   while true do
+    local checked= 0
   if isChest() then
     break
   end
   if a then
+    local checked = checked + 1
+    turtle.turnRight()
     flex.send("Output inventory not found!",
       colors.red)
-    a = false
+    if checked == 4 then
+        a = false
+    end
   end --if
   sleep(1)
   end --while
